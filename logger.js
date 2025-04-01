@@ -1,7 +1,9 @@
 class ConsoleLogger {
   static DEBUG = 1;
   static INFO = 2;
-  static ERROR = 3;
+  static WARN = 3;
+  static ERROR = 4;
+  static CRITICAL = 5;
 
   static formatDate() {
     return new Date().toISOString().replace("T", " ").replace("Z", "");
@@ -27,8 +29,14 @@ class ConsoleLogger {
       case ConsoleLogger.INFO:
         logType = "INFO";
         break;
+      case ConsoleLogger.WARN:
+        logType = "WARN";
+        break;
       case ConsoleLogger.ERROR:
         logType = "ERROR";
+        break;
+      case ConsoleLogger.CRITICAL:
+        logType = "CRITICAL";
         break;
       default:
         throw new Error("Invalid log type");
@@ -48,13 +56,17 @@ class Application {
       this.logger.print("Application is starting...");
       this.logger.log(ConsoleLogger.INFO, "System initialized successfully.");
       this.logger.log(ConsoleLogger.DEBUG, "Debugging mode enabled.");
+      this.logger.log(ConsoleLogger.WARN, "Potential issue detected.");
       this.logger.log(ConsoleLogger.ERROR, "An unexpected error occurred!");
+      this.logger.log(
+        ConsoleLogger.CRITICAL,
+        "System failure! Immediate action required."
+      );
 
       if (this.debugMode) {
         console.log("Running in debug mode...");
         console.log("Logger instance:", this.logger);
       }
-
       // uncomment ro datesto exception handlingi
       // this.logger.log(ConsoleLogger.INFO, "");
     } catch (error) {
@@ -63,5 +75,5 @@ class Application {
   }
 }
 
-const app = new Application(true); // debug mode chamrtveli
+const app = new Application(true); // Enable debug mode
 app.run();
